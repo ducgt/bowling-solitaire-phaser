@@ -2,7 +2,10 @@ var game = new Phaser.Game(720, 480, Phaser.AUTO, null, {
   preload: preload, create: create, update: update
 });
 
-var deck,
+var NUM_PINS = 10,
+    STACK1 = 5,
+    STACK2 = 3,
+    deck,
     selectedCard,
     pins,
     balls,
@@ -10,7 +13,20 @@ var deck,
     cardImgPrefix = 'card',
     suits = [ 'Spades', 'Clubs' ],
     values = [ '10', '9', '8', '7', '6', '5', '4', '3', '2', 'A' ],
-    cardPositionText;
+    cardPositionText,
+    cardLocations = [
+      // ------------------- pins ---------------------------
+      {x:670,y:60}, {x:590,y:60}, {x:510,y:60}, {x:430,y:60},
+               {x:630,y:160}, {x:550,y:160}, {x:470,y:160},
+                     {x:590,y:260}, {x:510,y:260},
+                          {x:550,y:360},
+      // stack 1
+      {x:50,y:60}, {x:70,y:60,f:1}, {x:90,y:60,f:1}, {x:110,y:60,f:1}, {x:130,y:60,f:1},
+      // stack 2
+      {x:50,y:160}, {x:70,y:160,f:1}, {x:90,y:160,f:1},
+      // stack 3
+      {x:50,y:260}, {x:70,y:260,f:1}
+    ];
 
 function preload() {
   game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
@@ -67,14 +83,15 @@ function update() {
 }
 
 function initDeck() {
-  var cardX = 0,
-      cardY = 0;
+  var cardNum = 0,
+      cards = [];
   deck = game.add.group();
   for(var val = 0; val < values.length; val++) {
     for(var suit = 0; suit < suits.length; suit++) {
+      // inside-out Fisher-Yates shuffle
       var randomIndex = Math.floor(Math.random() * Math.max(val*suit-1, 0));
-      deck.addChildAt(createCard(suit, val, cardX, cardY), randomIndex);
-      cardX += 20;
+      deck.addChildAt(createCard(suit, val, cardLocations[cardNum].x, cardLocations[cardNum].y), randomIndex);
+      cardNum++;
     }
   }
 }
