@@ -10,6 +10,7 @@ var NUM_PINS = 10,
     pins,
     balls,
     debug = true,
+    flippedDirty = true,
     cardImgPrefix = 'card',
     suits = [ 'Spades', 'Clubs' ],
     values = [ '10', '9', '8', '7', '6', '5', '4', '3', '2', 'A' ],
@@ -64,11 +65,7 @@ function create() {
   this.game.input.keyboard.addKey(Phaser.Keyboard.F).onDown.add(function() {
     if(!selectedCard) { return; }
     selectedCard.faceUp = !selectedCard.faceUp;
-    if(selectedCard.faceUp) {
-      selectedCard.loadTexture(selectedCard.imgName);
-    } else {
-      selectedCard.loadTexture('cardBackBlue');
-    }
+    flippedDirty = true;
   });
 }
 
@@ -80,6 +77,11 @@ function update() {
       cardPositionText.setText('Card Position: ('+selectedCard.x+', '+selectedCard.y+')');
     }
   }
+
+  if(flippedDirty) {
+    handleFlipped();
+    flippedDirty = false;
+  }
 }
 
 function initDeck() {
@@ -90,19 +92,20 @@ function initDeck() {
     for(var suit = 0; suit < suits.length; suit++) {
       // inside-out Fisher-Yates shuffle
       var randomIndex = Math.floor(Math.random() * Math.max(val*suit-1, 0));
-      deck.addChildAt(createCard(suit, val, cardLocations[cardNum].x, cardLocations[cardNum].y), randomIndex);
+      var info = cardLocations[cardNum];
+      deck.addChildAt(createCard(suit, val, info.x, info.y, info.f), randomIndex);
       cardNum++;
     }
   }
 }
 
-function createCard(suitIndex, valueIndex, cardX, cardY) {
+function createCard(suitIndex, valueIndex, cardX, cardY, flipped) {
   var imgName = cardImgPrefix + suits[suitIndex] + values[valueIndex],
       newCard = game.add.sprite(cardX, cardY, imgName),
       num = valueIndex*(suitIndex+1);
 
   // card attributes
-  newCard.faceUp = true;
+  newCard.faceUp = !(typeof flipped !== 'undefined' && flipped === 1);
   newCard.imgName = imgName;
 
   // card physical properties
@@ -120,4 +123,14 @@ function createCard(suitIndex, valueIndex, cardX, cardY) {
   }, this);
 
   return newCard;
+}
+
+function handleFlipped() {
+  deck.forEach(function(card) {
+    if(card.faceUp) {
+      card.loadTexture(card.imgName);
+    } else {
+      card.loadTexture('cardBackBlue');
+    }
+  });
 }
