@@ -1,0 +1,16 @@
+{
+  "name": "bowling-solitaire-phaser",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./node_modules/http-server/bin/http-server ."
+  },
+  "author": "Guy Bianco IV <gjbiancoiv@gmail.com> (http://gjbianco.github.io)",
+  "license": "MIT",
+  "dependencies": {
+    "bower": "^1.7.7",
+    "http-server": "^0.8.5"
+  }
+}
