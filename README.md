@@ -1,25 +1,19 @@
-# card-pack-phaser
+# bowling-solitaire-phaser
 
-> Bootstrap files for making card games in [Phaser](http://phaser.io).
+> Bowling solitaire implementation made in [Phaser](http://phaser.io). Based on the Bowling Solitaire game by Sid Sackson described in his book [A Gamut of Games](http://www.amazon.com/A-Gamut-Games-Sid-Sackson/dp/0486273474).
 
 ## Requirements
 
-You can either just take the game source (`www/game.js`) or use the built in server to host the file. If you just want the game source, you can skip the installation steps and you will not need anything else.
+You can either just take the game source (`game.js`) or use the built in server to host the file. If you just want the game source, you can skip the installation steps and you will not need anything else.
 
  - npm
- - grunt
  - bower
 
 ## Running the Server
 
-Install necessary dependencies for running server using NPM (runs Bower):
+Install necessary dependencies for running server using NPM:
 ```shell
 npm install
-```
-
-Copy Bower files to necessary location via Grunt:
-```shell
-grunt
 ```
 
 Start the server with:
