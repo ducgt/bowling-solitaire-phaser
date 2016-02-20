@@ -2,12 +2,9 @@ var game = new Phaser.Game(720, 480, Phaser.AUTO, null, {
   preload: preload, create: create, update: update
 });
 
-var NUM_PINS = 10,
-    STACK1 = 5,
-    STACK2 = 3,
-    deck,
+var deck,
     selectedCard,
-    debug = true,
+    debug = false,
     flippedDirty = true,
     cardImgPrefix = 'card',
     cardPool = [
@@ -52,8 +49,9 @@ function preload() {
   game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
   game.scale.pageAlignHorizontally = true;
   game.scale.pageAlignVertically = true;
-  game.stage.backgroundColor = '#093';
+  // game.stage.backgroundColor = '#093';
 
+  game.load.image('background', 'res/img/card_table.png');
   game.load.image('cardBackBlue', 'res/img/Cards/cardBack_blue2.png');
   for(var i = 0; i < cardPool.length; i++) {
       var imgName = cardImgPrefix + cardPool[i].suit + cardPool[i].val;
@@ -63,6 +61,7 @@ function preload() {
 
 function create() {
   game.physics.startSystem(Phaser.Physics.ARCADE);
+  game.add.sprite(0, 0, 'background');
   initDeck();
 
   if(debug) {
